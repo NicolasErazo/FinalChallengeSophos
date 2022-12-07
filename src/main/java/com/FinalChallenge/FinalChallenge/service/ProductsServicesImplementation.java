@@ -17,27 +17,28 @@ public class ProductsServicesImplementation implements ProductsServices {
     ProductsRepository productsRepository;
 
     @Override
-    public Products createProduct(Products product) {
-        // TODO Auto-generated method stub
+    public Boolean createProduct(Products product) {
+        
         product.setAccountNumber(generateAccountNumber(product.getAccountType()));
-        return productsRepository.save(product);
+        productsRepository.save(product);
+        return true;
     }
 
     @Override
     public List<Products> getAllProducts() {
-        // TODO Auto-generated method stub
+        
         return productsRepository.findAll();
     }
 
     @Override
     public Optional<Products> getProductById(int id) {
-        // TODO Auto-generated method stub
+        
         return productsRepository.findById(id);
     }
 
     @Override
     public boolean deleteProductById(int id) {
-        // TODO Auto-generated method stub
+        
         return getProductById(id).map(client ->{
             productsRepository.deleteById(id);
             return true;

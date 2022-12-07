@@ -1,7 +1,10 @@
 package com.FinalChallenge.FinalChallenge.controller;
 
+import java.util.Collections;
 import java.util.List;
 
+import com.FinalChallenge.FinalChallenge.entity.Products;
+import com.FinalChallenge.FinalChallenge.repository.ClientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +29,9 @@ public class ClientsController {
 
     @Autowired
     ProductsServices productsServices;
-    
+    @Autowired
+    private ClientsRepository clientsRepository;
+
 
     @GetMapping
     public ResponseEntity<List<Clients>> getClients(){
@@ -39,7 +44,23 @@ public class ClientsController {
         .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
         .orElse(new ResponseEntity<Clients>(HttpStatus.NOT_FOUND));
     }
-    
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<List<Products>> getAllProductsByClient(@PathVariable("id") int id){
+        Clients clients = clientsRepository.findById(id).orElseThrow();
+
+        if(clients != null){
+            return new ResponseEntity<>(clients.getProducts(), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{id}/products/add")
+    public ResponseEntity<Boolean> addProductByClient(@RequestBody Products product, @PathVariable("id") int id){
+        return new ResponseEntity<>(clientsServices.addProductToClient(product, id), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Clients> createClient(@RequestBody Clients client){
         return new ResponseEntity<>(clientsServices.createClient(client), HttpStatus.CREATED);

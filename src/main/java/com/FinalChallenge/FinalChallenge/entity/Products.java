@@ -2,18 +2,8 @@ package com.FinalChallenge.FinalChallenge.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +38,10 @@ public class Products {
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
+
+    //@ManyToOne
+    //@JoinColumn(name = "client_id")
+    private int client_id;
 
     @PrePersist
     public void prePersist() {

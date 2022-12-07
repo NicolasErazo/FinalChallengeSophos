@@ -27,6 +27,7 @@ public class ProductsController {
         return new ResponseEntity<>(productsServices.getAllProducts(), HttpStatus.OK);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Products> getClientById(@PathVariable("id") int id){
         return productsServices.getProductById(id)
@@ -35,7 +36,7 @@ public class ProductsController {
     }
     
     @PostMapping
-    public ResponseEntity<Products> createClient(@RequestBody Products product){
+    public ResponseEntity<Boolean> createClient(@RequestBody Products product){
         return new ResponseEntity<>(productsServices.createProduct(product), HttpStatus.CREATED);
     }
 
