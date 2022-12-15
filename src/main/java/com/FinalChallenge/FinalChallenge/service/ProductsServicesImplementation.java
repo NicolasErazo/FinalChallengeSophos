@@ -25,12 +25,6 @@ public class ProductsServicesImplementation implements ProductsServices {
     }
 
     @Override
-    public List<Products> getAllProducts() {
-        
-        return productsRepository.findAll();
-    }
-
-    @Override
     public Optional<Products> getProductById(int id) {
         
         return productsRepository.findById(id);
@@ -57,10 +51,10 @@ public class ProductsServicesImplementation implements ProductsServices {
         }
     
         switch (accountType) {
-            case Savings_Account:
+            case savings_account:
                 string = "46" + string.substring(0, 8);
                 break;
-            case Current_Account:
+            case current_account:
                 string = "23" + string.substring(0, 8);
                 break;
         }

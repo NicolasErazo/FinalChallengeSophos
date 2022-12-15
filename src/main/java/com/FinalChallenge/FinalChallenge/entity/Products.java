@@ -18,18 +18,19 @@ import lombok.Setter;
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    @Column(updatable = false)
     private long accountNumber;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private int balance;
-    private int availableBalance;
+    private long balance;
+    private long availableBalance;
     private boolean GMF;
     
     @Temporal(TemporalType.TIMESTAMP)
@@ -39,9 +40,7 @@ public class Products {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
-    //@ManyToOne
-    //@JoinColumn(name = "client_id")
-    private int client_id;
+    private long client_id;
 
     @PrePersist
     public void prePersist() {

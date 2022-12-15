@@ -1,10 +1,9 @@
 package com.FinalChallenge.FinalChallenge.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -26,12 +25,12 @@ import lombok.Setter;
 public class Clients {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     private IdentificationType identificationType;
 
-    private int identificationNumber;
+    private long identificationNumber;
     
     @Size(min = 2)
     private String firstName;
@@ -44,7 +43,7 @@ public class Clients {
     private String email;
 
     @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false)

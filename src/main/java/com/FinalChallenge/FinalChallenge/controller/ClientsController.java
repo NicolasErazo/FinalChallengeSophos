@@ -4,23 +4,19 @@ import java.util.Collections;
 import java.util.List;
 
 import com.FinalChallenge.FinalChallenge.entity.Products;
+import com.FinalChallenge.FinalChallenge.entity.Status;
 import com.FinalChallenge.FinalChallenge.repository.ClientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.FinalChallenge.FinalChallenge.entity.Clients;
 import com.FinalChallenge.FinalChallenge.service.ClientsServices;
 import com.FinalChallenge.FinalChallenge.service.ProductsServices;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clients")
 public class ClientsController {
 
@@ -28,10 +24,7 @@ public class ClientsController {
     ClientsServices clientsServices;
 
     @Autowired
-    ProductsServices productsServices;
-    @Autowired
     private ClientsRepository clientsRepository;
-
 
     @GetMapping
     public ResponseEntity<List<Clients>> getClients(){
@@ -58,12 +51,17 @@ public class ClientsController {
 
     @PostMapping("/{id}/products/add")
     public ResponseEntity<Boolean> addProductByClient(@RequestBody Products product, @PathVariable("id") int id){
+        product.setStatus(Status.active);
         return new ResponseEntity<>(clientsServices.addProductToClient(product, id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Clients> createClient(@RequestBody Clients client){
-        return new ResponseEntity<>(clientsServices.createClient(client), HttpStatus.CREATED);
+        if (clientsServices.createClient(client) != null){
+            return new ResponseEntity<>(clientsServices.createClient(client), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")

@@ -13,5 +13,6 @@ public interface ClientsServices {
     public Optional<Clients> getClientById(int id);
     public boolean deleteClientById(int id);
     Boolean addProductToClient(Products product, int id);
+
 }
 

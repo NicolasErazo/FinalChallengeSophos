@@ -8,7 +8,6 @@ import com.FinalChallenge.FinalChallenge.entity.Products;
 public interface ProductsServices {
 
     public Boolean createProduct(Products product);
-    public List<Products> getAllProducts();
     public Optional<Products> getProductById(int id);
     public boolean deleteProductById(int id);
     

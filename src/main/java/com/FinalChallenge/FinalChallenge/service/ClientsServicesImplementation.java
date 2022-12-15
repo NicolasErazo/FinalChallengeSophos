@@ -1,14 +1,22 @@
 package com.FinalChallenge.FinalChallenge.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
 import com.FinalChallenge.FinalChallenge.entity.Products;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.FinalChallenge.FinalChallenge.entity.Clients;
 import com.FinalChallenge.FinalChallenge.repository.ClientsRepository;
+
+import javax.management.BadAttributeValueExpException;
 
 @Service
 public class ClientsServicesImplementation implements ClientsServices {
@@ -21,8 +29,10 @@ public class ClientsServicesImplementation implements ClientsServices {
 
     @Override
     public Clients createClient(Clients client) {
-        
-        return clientsRepository.save(client);
+        if (isClientOver18Years(client.getDateOfBirth())){
+            return clientsRepository.save(client);
+        }
+        return null;
     }
 
     @Override
@@ -56,6 +66,13 @@ public class ClientsServicesImplementation implements ClientsServices {
         }
             return false;
 
+    }
+
+    private  Boolean isClientOver18Years(LocalDate dateOfBirth){
+        int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        if (age >= 18){
+            return true;
+        } else return false;
     }
 
 }
