@@ -9,6 +9,6 @@ public interface ProductsServices {
 
     public Boolean createProduct(Products product);
     public Optional<Products> getProductById(int id);
-    public boolean deleteProductById(int id);
+    public boolean changeStatusProductById(int id);
     
 }

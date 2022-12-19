@@ -25,5 +25,5 @@ public class Transactions {
     private String typeOfMovement;
     private long balance;
     private long availableBalance;
-    
+    private long product_id;
 }

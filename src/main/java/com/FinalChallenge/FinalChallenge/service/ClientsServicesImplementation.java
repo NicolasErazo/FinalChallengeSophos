@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.FinalChallenge.FinalChallenge.entity.Products;
+import com.FinalChallenge.FinalChallenge.entity.Status;
+import com.FinalChallenge.FinalChallenge.repository.ProductsRepository;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +28,12 @@ public class ClientsServicesImplementation implements ClientsServices {
 
     @Autowired
     ProductsServices productsServices;
+    @Autowired
+    private ProductsRepository productsRepository;
 
     @Override
     public Clients createClient(Clients client) {
-        if (isClientOver18Years(client.getDateOfBirth())){
+        if (isClientOver18Years(client.getDateOfBirth())) {
             return clientsRepository.save(client);
         }
         return null;
@@ -37,20 +41,20 @@ public class ClientsServicesImplementation implements ClientsServices {
 
     @Override
     public List<Clients> getAllClients() {
-        
+
         return clientsRepository.findAll();
     }
 
     @Override
     public Optional<Clients> getClientById(int id) {
-        
+
         return clientsRepository.findById(id);
     }
 
     @Override
     public boolean deleteClientById(int id) {
-        
-        return getClientById(id).map(client ->{
+
+        return getClientById(id).map(client -> {
             clientsRepository.deleteById(id);
             return true;
         }).orElse(false);
@@ -61,16 +65,27 @@ public class ClientsServicesImplementation implements ClientsServices {
 
         if (clientsRepository.findById(id).isPresent()) {
             product.setClient_id(id);
+            if (product.getStatus() == null) {
+                product.setStatus(Status.active);
+            } else {
+                Optional<Products> productExist = productsRepository.findById((int) product.getId());
+                if(productExist.isPresent()) {
+                    if (product.getStatus().equals(Status.canceled) && productExist.get().getBalance() != 0) {
+                        return false;
+                    }
+                    product.setClient_id(id);
+                }
+            }
             productsServices.createProduct(product);
             return true;
         }
-            return false;
+        return false;
 
     }
 
-    private  Boolean isClientOver18Years(LocalDate dateOfBirth){
+    private Boolean isClientOver18Years(LocalDate dateOfBirth) {
         int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
-        if (age >= 18){
+        if (age >= 18) {
             return true;
         } else return false;
     }

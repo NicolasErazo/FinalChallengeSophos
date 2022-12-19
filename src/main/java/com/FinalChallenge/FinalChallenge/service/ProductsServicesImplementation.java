@@ -31,7 +31,7 @@ public class ProductsServicesImplementation implements ProductsServices {
     }
 
     @Override
-    public boolean deleteProductById(int id) {
+    public boolean changeStatusProductById(int id) {
         
         return getProductById(id).map(client ->{
             productsRepository.deleteById(id);
