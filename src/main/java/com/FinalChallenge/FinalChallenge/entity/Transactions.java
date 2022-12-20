@@ -19,11 +19,19 @@ public class Transactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDateTime dateOfMovement;
+
+    @Enumerated(EnumType.STRING)
     private TypeOfTransaction typeOfTransaction;
+
     private String description;
     private long value;
     private String typeOfMovement;
     private long balance;
     private long availableBalance;
     private long product_id;
+
+    @PrePersist
+    public void prePersist() {
+        dateOfMovement = LocalDateTime.now();
+    }
 }
