@@ -83,6 +83,11 @@ public class ClientsServicesImplementation implements ClientsServices {
 
     }
 
+    @Override
+    public Optional<Products> getProductById(int id) {
+        return productsRepository.findById(id);
+    }
+
     private Boolean isClientOver18Years(LocalDate dateOfBirth) {
         int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
         if (age >= 18) {

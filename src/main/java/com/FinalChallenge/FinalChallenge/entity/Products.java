@@ -1,8 +1,10 @@
 package com.FinalChallenge.FinalChallenge.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +23,7 @@ public class Products {
     private long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(updatable = false)
     private AccountType accountType;
 
     @Column(updatable = false)
@@ -41,6 +44,11 @@ public class Products {
     private LocalDateTime updatedAt;
 
     private long client_id;
+
+    @OneToMany(targetEntity = Transactions.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name="product_id", referencedColumnName = "id")
+    private List<Transactions> transactions;
 
     @PrePersist
     public void prePersist() {

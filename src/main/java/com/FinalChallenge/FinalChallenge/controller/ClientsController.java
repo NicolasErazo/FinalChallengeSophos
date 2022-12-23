@@ -3,7 +3,6 @@ package com.FinalChallenge.FinalChallenge.controller;
 import java.util.List;
 
 import com.FinalChallenge.FinalChallenge.entity.Products;
-import com.FinalChallenge.FinalChallenge.entity.Status;
 import com.FinalChallenge.FinalChallenge.repository.ClientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,13 @@ public class ClientsController {
         }else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{id}/products/{idProduct}")
+    public ResponseEntity<Products> getProductById(@PathVariable("idProduct") int idProduct){
+        return clientsServices.getProductById(idProduct)
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{id}/products/add")

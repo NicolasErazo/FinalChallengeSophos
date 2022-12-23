@@ -3,6 +3,8 @@ package com.FinalChallenge.FinalChallenge.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.FinalChallenge.FinalChallenge.entity.Status;
+import com.FinalChallenge.FinalChallenge.entity.Transactions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class ProductsServicesImplementation implements ProductsServices {
 
     @Autowired
     ProductsRepository productsRepository;
+
+    @Autowired
+    TransactionsServices transactionsServices;
 
     @Override
     public Boolean createProduct(Products product) {
@@ -37,6 +42,16 @@ public class ProductsServicesImplementation implements ProductsServices {
             productsRepository.deleteById(id);
             return true;
         }).orElse(false);
+    }
+
+    @Override
+    public Boolean addTransactionToProduct(Transactions transaction, int id) {
+        if (productsRepository.findById(id).isPresent()) {
+            transaction.setProduct_id(id);
+            transactionsServices.addMovementToProduct(transaction, id);
+            return true;
+        }
+        return false;
     }
 
     private long generateAccountNumber(AccountType accountType){
