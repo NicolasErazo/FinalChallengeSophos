@@ -61,7 +61,7 @@ public class ClientsServicesImplementation implements ClientsServices {
     }
 
     @Override
-    public Boolean addProductToClient(Products product, int id) {
+    public boolean addProductToClient(Products product, int id) {
 
         if (clientsRepository.findById(id).isPresent()) {
             product.setClient_id(id);

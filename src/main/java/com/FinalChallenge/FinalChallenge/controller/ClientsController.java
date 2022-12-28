@@ -24,44 +24,49 @@ public class ClientsController {
     ClientsRepository clientsRepository;
 
     @GetMapping
-    public ResponseEntity<List<Clients>> getClients(){
+    public ResponseEntity<List<Clients>> getClients() {
         return new ResponseEntity<>(clientsServices.getAllClients(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Clients> getClientById(@PathVariable("id") int id){
+    public ResponseEntity<Clients> getClientById(@PathVariable("id") int id) {
         return clientsServices.getClientById(id)
-        .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
-        .orElse(new ResponseEntity<Clients>(HttpStatus.NOT_FOUND));
+                .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
+                .orElse(new ResponseEntity<Clients>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{id}/products")
-    public ResponseEntity<List<Products>> getAllProductsByClient(@PathVariable("id") int id){
+    public ResponseEntity<List<Products>> getAllProductsByClient(@PathVariable("id") int id) {
         Clients clients = clientsRepository.findById(id).orElseThrow();
 
-        if(clients != null){
+        if (clients != null) {
             return new ResponseEntity<>(clients.getProducts(), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{id}/products/{idProduct}")
-    public ResponseEntity<Products> getProductById(@PathVariable("idProduct") int idProduct){
+    public ResponseEntity<Products> getProductById(@PathVariable("idProduct") int idProduct) {
         return clientsServices.getProductById(idProduct)
                 .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{id}/products/add")
-    public ResponseEntity<Boolean> addProductByClient(@RequestBody Products product, @PathVariable("id") int id){
+    public ResponseEntity addProductByClient(@RequestBody Products product, @PathVariable("id") int id) {
 
-        return new ResponseEntity<>(clientsServices.addProductToClient(product, id), HttpStatus.OK);
+        if (clientsServices.addProductToClient(product, id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 
     @PostMapping
-    public ResponseEntity<Clients> createClient(@RequestBody Clients client){
-        if (clientsServices.createClient(client) != null){
+    public ResponseEntity<Clients> createClient(@RequestBody Clients client) {
+        if (clientsServices.createClient(client) != null) {
             return new ResponseEntity<>(clientsServices.createClient(client), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -69,8 +74,8 @@ public class ClientsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteClientById(@PathVariable("id") int id){
-        if (clientsServices.deleteClientById(id)){
+    public ResponseEntity deleteClientById(@PathVariable("id") int id) {
+        if (clientsServices.deleteClientById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

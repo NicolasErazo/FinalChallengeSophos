@@ -35,10 +35,29 @@ public class TransactionsServicesImplementation implements TransactionsServices 
 
                     if (product.get().getAccountType().equals(AccountType.savings_account) && operation >= 0) {
                         products.setBalance(operation);
+                        long gmf = (long) (transaction.getValue() * 0.004);
+                        if (!products.isGMF()) {
+                            if (products.getAvailableBalance() == 0) {
+                                products.setAvailableBalance(product.get().getBalance() - gmf);
+                            } else {
+                                products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
+                            }
+
+                        }
+
                     } else {
 
                         if (product.get().getAccountType().equals(AccountType.current_account) && operation >= -3000000) {
                             products.setBalance(operation);
+                            long gmf = (long) (transaction.getValue() * 0.004);
+                            if (!products.isGMF()) {
+                                if (products.getAvailableBalance() == 0) {
+                                    products.setAvailableBalance(product.get().getBalance() - gmf);
+                                } else {
+                                    products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
+                                }
+
+                            }
                         } else {
                             return false;
                         }
@@ -46,6 +65,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
 
                 } else {
                     products.setBalance(transaction.getValue() + product.get().getBalance());
+                    products.setAvailableBalance(products.getAvailableBalance() + transaction.getValue());
                 }
 
                 productsRepository.save(products);
