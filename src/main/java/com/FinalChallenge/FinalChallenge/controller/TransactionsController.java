@@ -34,8 +34,13 @@ public class TransactionsController {
     }
 
     @PostMapping("/{idProduct}/add")
-    public ResponseEntity<Boolean> createTransaction(@RequestBody Transactions transactions, @PathVariable("idProduct") int id) {
-        return new ResponseEntity<>(transactionsServices.addMovementToProduct(transactions, id), HttpStatus.OK);
+    public ResponseEntity createTransaction(@RequestBody Transactions transactions, @PathVariable("idProduct") int id) {
+
+        if (transactionsServices.addMovementToProduct(transactions, id)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 }

@@ -63,7 +63,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                         }
                     }
 
-                } else {
+                } else if (!product.get().getStatus().equals(Status.inactive)) {
                     products.setBalance(transaction.getValue() + product.get().getBalance());
                     products.setAvailableBalance(products.getAvailableBalance() + transaction.getValue());
                 }
