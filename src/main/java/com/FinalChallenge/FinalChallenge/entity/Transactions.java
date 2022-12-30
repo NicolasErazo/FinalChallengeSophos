@@ -3,6 +3,8 @@ package com.FinalChallenge.FinalChallenge.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,12 @@ public class Transactions {
     @Enumerated(EnumType.STRING)
     private TypeOfTransaction typeOfTransaction;
 
+    @NotNull
     private String description;
+
+    @NotNull
     private long value;
+
     private String typeOfMovement;
     private long balance;
     private long availableBalance;

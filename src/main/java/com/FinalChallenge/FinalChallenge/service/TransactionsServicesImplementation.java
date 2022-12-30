@@ -43,6 +43,8 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                                 products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
                             }
 
+                        }else{
+                            products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
                         }
 
                     } else {
@@ -57,6 +59,8 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                                     products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
                                 }
 
+                            }else{
+                                products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
                             }
                         } else {
                             return false;
