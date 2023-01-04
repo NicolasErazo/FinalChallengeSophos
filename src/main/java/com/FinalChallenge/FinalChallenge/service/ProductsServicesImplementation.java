@@ -54,6 +54,11 @@ public class ProductsServicesImplementation implements ProductsServices {
         return false;
     }
 
+    @Override
+    public List<Products> getAllProducts() {
+        return productsRepository.findAll();
+    }
+
     private long generateAccountNumber(AccountType accountType){
         String bank = "1234567890";
         String string = "";

@@ -36,6 +36,7 @@ public class Transactions {
     private long availableBalance;
     private long product_id;
 
+    @NotNull
     @Column(updatable = false)
     private String userCreator;
 

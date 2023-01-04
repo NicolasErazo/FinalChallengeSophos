@@ -4,21 +4,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
-
 import com.FinalChallenge.FinalChallenge.entity.Products;
 import com.FinalChallenge.FinalChallenge.entity.Status;
 import com.FinalChallenge.FinalChallenge.repository.ProductsRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.FinalChallenge.FinalChallenge.entity.Clients;
 import com.FinalChallenge.FinalChallenge.repository.ClientsRepository;
 
-import javax.management.BadAttributeValueExpException;
 
 @Service
 public class ClientsServicesImplementation implements ClientsServices {
