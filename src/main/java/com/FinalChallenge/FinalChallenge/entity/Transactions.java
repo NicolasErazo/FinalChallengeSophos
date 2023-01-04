@@ -36,6 +36,9 @@ public class Transactions {
     private long availableBalance;
     private long product_id;
 
+    @Column(updatable = false)
+    private String userCreator;
+
     @PrePersist
     public void prePersist() {
         dateOfMovement = LocalDateTime.now();

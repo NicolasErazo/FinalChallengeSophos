@@ -45,6 +45,11 @@ public class Clients {
     @Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 
+    @Column(updatable = false)
+    private String userCreator;
+
+    private String userModifier;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false)
     private LocalDateTime createdAt;

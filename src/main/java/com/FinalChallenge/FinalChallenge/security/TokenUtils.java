@@ -11,7 +11,7 @@ import java.util.*;
 public class TokenUtils {
 
     private final static String ACCESS_TOKEN_SECRET = "NPcudxy0yU5T3tBzho7iCotZ3cnetKwcTIRlX0iwRl0";
-    private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 3_600L;
+    private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 86_400L;
 
     public static String createToken(String name, String email){
         long expirationTime = ACCESS_TOKEN_VALIDITY_SECONDS * 1_000;
