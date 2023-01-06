@@ -3,6 +3,7 @@ package com.FinalChallenge.FinalChallenge.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class Transactions {
     private String description;
 
     @NotNull
+    @Min(value = 0, message = "The field must be positive")
     private long value;
 
     private String typeOfMovement;

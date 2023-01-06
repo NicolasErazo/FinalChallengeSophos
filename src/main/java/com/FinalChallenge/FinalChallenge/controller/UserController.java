@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
@@ -15,6 +17,11 @@ public class UserController {
 
     @Autowired
     UserServices userServices;
+
+    @GetMapping
+    public ResponseEntity<List<User>> getClients() {
+        return new ResponseEntity<>(userServices.getAllUsers(), HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getClientById(@PathVariable("id") int id) {

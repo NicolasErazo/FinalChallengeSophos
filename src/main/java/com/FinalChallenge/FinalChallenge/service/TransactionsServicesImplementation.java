@@ -48,7 +48,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
 
                 } else {
 
-                    if (product.get().getAccountType().equals(AccountType.current_account) && operation >= -3000000) {
+                    if (product.get().getAccountType().equals(AccountType.checking_account) && operation >= -3000000) {
                         products.setBalance(operation);
                         long gmf = (long) (transaction.getValue() * 0.004);
                         if (!products.isGMF()) {

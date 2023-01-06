@@ -1,6 +1,6 @@
 package com.FinalChallenge.FinalChallenge.entity;
 
 public enum AccountType {
-    current_account,
+    checking_account,
     savings_account
 }

@@ -74,7 +74,7 @@ public class ProductsServicesImplementation implements ProductsServices {
             case savings_account:
                 string = "46" + string.substring(0, 8);
                 break;
-            case current_account:
+            case checking_account:
                 string = "23" + string.substring(0, 8);
                 break;
         }
