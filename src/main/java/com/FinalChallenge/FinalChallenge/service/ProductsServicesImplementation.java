@@ -71,10 +71,10 @@ public class ProductsServicesImplementation implements ProductsServices {
         }
     
         switch (accountType) {
-            case savings_account:
+            case savings:
                 string = "46" + string.substring(0, 8);
                 break;
-            case checking_account:
+            case checking:
                 string = "23" + string.substring(0, 8);
                 break;
         }

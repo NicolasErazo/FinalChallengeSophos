@@ -32,23 +32,8 @@ public class TransactionsServicesImplementation implements TransactionsServices 
             if (transaction.getTypeOfMovement().equals("credit")) {
                 long operation = product.get().getBalance() - transaction.getValue();
 
-                if (product.get().getAccountType().equals(AccountType.savings_account) && operation >= 0) {
-                    products.setBalance(operation);
-                    long gmf = (long) (transaction.getValue() * 0.004);
-                    if (!products.isGMF()) {
-                        if (products.getAvailableBalance() == 0) {
-                            products.setAvailableBalance(product.get().getBalance() - gmf);
-                        } else {
-                            products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
-                        }
-
-                    }else{
-                        products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
-                    }
-
-                } else {
-
-                    if (product.get().getAccountType().equals(AccountType.checking_account) && operation >= -3000000) {
+                if (product.get().getAccountType().equals(AccountType.savings) && operation >= 0) {
+                    if ((products.getAvailableBalance() - (products.getBalance() * 0.004)) >= transaction.getValue()) {
                         products.setBalance(operation);
                         long gmf = (long) (transaction.getValue() * 0.004);
                         if (!products.isGMF()) {
@@ -58,9 +43,32 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                                 products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
                             }
 
-                        }else{
+                        } else {
                             products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
                         }
+                    } else {
+                        return false;
+                    }
+                } else {
+
+                    if (product.get().getAccountType().equals(AccountType.checking) && operation >= -3000000) {
+                        if (true) { //condition availableBalance
+                            products.setBalance(operation);
+                            long gmf = (long) (transaction.getValue() * 0.004);
+                            if (!products.isGMF()) {
+                                if (products.getAvailableBalance() == 0) {
+                                    products.setAvailableBalance(product.get().getBalance() - gmf);
+                                } else {
+                                    products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
+                                }
+
+                            } else {
+                                products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
+                            }
+                        } else {
+                            return false;
+                        }
+
                     } else {
                         return false;
                     }
