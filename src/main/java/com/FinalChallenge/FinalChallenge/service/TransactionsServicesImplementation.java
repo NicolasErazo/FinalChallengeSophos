@@ -29,7 +29,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
             transaction.setBalance(product.get().getBalance());
             transaction.setAvailableBalance(product.get().getAvailableBalance());
 
-            if (transaction.getTypeOfMovement().equals("credit")) {
+            if (transaction.getTypeOfMovement().equals("debit")) {
                 long operation = product.get().getBalance() - transaction.getValue();
 
                 if (product.get().getAccountType().equals(AccountType.savings) && operation >= 0) {
