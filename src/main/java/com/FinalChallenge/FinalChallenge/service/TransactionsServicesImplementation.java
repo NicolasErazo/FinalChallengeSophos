@@ -7,6 +7,7 @@ import com.FinalChallenge.FinalChallenge.entity.Transactions;
 import com.FinalChallenge.FinalChallenge.repository.ProductsRepository;
 import com.FinalChallenge.FinalChallenge.repository.TransactionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,11 +20,14 @@ public class TransactionsServicesImplementation implements TransactionsServices 
     ProductsRepository productsRepository;
 
     @Override
-    public Boolean addMovementToProduct(Transactions transaction, int id) {
+    public Boolean addMovementToProduct(Transactions transaction, int id) throws ChangeSetPersister.NotFoundException {
 
         Optional<Products> product = productsRepository.findById(id);
 
-        if (!product.get().getStatus().equals(Status.canceled)) {
+        if (product.isEmpty()) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+        if (!product.get().getStatus().equals(Status.CANCELED)) {
             Products products = product.get();
             transaction.setProduct_id(id);
             transaction.setBalance(product.get().getBalance());
@@ -32,7 +36,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
             if (transaction.getTypeOfMovement().equals("debit")) {
                 long operation = product.get().getBalance() - transaction.getValue();
 
-                if (product.get().getAccountType().equals(AccountType.savings) && operation >= 0) {
+                if (product.get().getAccountType().equals(AccountType.SAVINGS) && operation >= 0) {
                     if ((products.getAvailableBalance() - (products.getBalance() * 0.004)) >= transaction.getValue()) {
                         products.setBalance(operation);
                         long gmf = (long) (transaction.getValue() * 0.004);
@@ -51,7 +55,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                     }
                 } else {
 
-                    if (product.get().getAccountType().equals(AccountType.checking) && operation >= -3000000) {
+                    if (product.get().getAccountType().equals(AccountType.CHECKING) && operation >= -3000000) {
                         if (true){  //(-2988000 <= ((transaction.getValue())*-1)) {
                             products.setBalance(operation);
                             long gmf = (long) (transaction.getValue() * 0.004);
@@ -74,7 +78,7 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                     }
                 }
 
-            } else if (!product.get().getStatus().equals(Status.inactive)) {
+            } else if (!product.get().getStatus().equals(Status.INACTIVE)) {
                 products.setBalance(transaction.getValue() + product.get().getBalance());
                 products.setAvailableBalance(products.getAvailableBalance() + transaction.getValue());
             }

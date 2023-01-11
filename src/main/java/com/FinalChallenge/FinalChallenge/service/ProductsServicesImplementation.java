@@ -3,9 +3,9 @@ package com.FinalChallenge.FinalChallenge.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.FinalChallenge.FinalChallenge.entity.Status;
 import com.FinalChallenge.FinalChallenge.entity.Transactions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import com.FinalChallenge.FinalChallenge.entity.AccountType;
@@ -45,7 +45,7 @@ public class ProductsServicesImplementation implements ProductsServices {
     }
 
     @Override
-    public Boolean addTransactionToProduct(Transactions transaction, int id) {
+    public Boolean addTransactionToProduct(Transactions transaction, int id) throws ChangeSetPersister.NotFoundException {
         if (productsRepository.findById(id).isPresent()) {
             transaction.setProduct_id(id);
             transactionsServices.addMovementToProduct(transaction, id);
@@ -71,10 +71,10 @@ public class ProductsServicesImplementation implements ProductsServices {
         }
     
         switch (accountType) {
-            case savings:
+            case SAVINGS:
                 string = "46" + string.substring(0, 8);
                 break;
-            case checking:
+            case CHECKING:
                 string = "23" + string.substring(0, 8);
                 break;
         }

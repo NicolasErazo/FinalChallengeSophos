@@ -38,12 +38,8 @@ public class ClientsController {
     @GetMapping("/{id}/products")
     public ResponseEntity<List<Products>> getAllProductsByClient(@PathVariable("id") int id) {
         Clients clients = clientsRepository.findById(id).orElseThrow();
+        return new ResponseEntity<>(clients.getProducts(), HttpStatus.OK);
 
-        if (clients != null) {
-            return new ResponseEntity<>(clients.getProducts(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
     }
 
     @GetMapping("/{id}/products/{idProduct}")
@@ -54,13 +50,13 @@ public class ClientsController {
     }
 
     @PostMapping("/{id}/products/add")
-    public ResponseEntity addProductByClient(@RequestBody Products product, @PathVariable("id") int id) {
+    public ResponseEntity<Boolean> addProductByClient(@RequestBody Products product, @PathVariable("id") int id) {
 
         if (clientsServices.addProductToClient(product, id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return ResponseEntity.status(HttpStatus.OK).body(Boolean.TRUE);
         }
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Boolean.FALSE);
+
 
     }
 
@@ -74,7 +70,7 @@ public class ClientsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteClientById(@PathVariable("id") int id) {
+    public ResponseEntity<Boolean> deleteClientById(@PathVariable("id") int id) {
         if (clientsServices.deleteClientById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

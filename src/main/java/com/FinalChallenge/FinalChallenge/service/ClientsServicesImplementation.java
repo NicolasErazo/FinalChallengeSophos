@@ -59,11 +59,11 @@ public class ClientsServicesImplementation implements ClientsServices {
         if (clientsRepository.findById(id).isPresent()) {
             product.setClient_id(id);
             if (product.getStatus() == null) {
-                product.setStatus(Status.active);
+                product.setStatus(Status.ACTIVE);
             } else {
                 Optional<Products> productExist = productsRepository.findById((int) product.getId());
                 if(productExist.isPresent()) {
-                    if (product.getStatus().equals(Status.canceled) && productExist.get().getBalance() != 0) {
+                    if (product.getStatus().equals(Status.CANCELED) && productExist.get().getBalance() != 0) {
                         return false;
                     }
                     product.setClient_id(id);

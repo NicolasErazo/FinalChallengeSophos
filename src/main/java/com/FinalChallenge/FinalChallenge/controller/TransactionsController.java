@@ -6,6 +6,7 @@ import com.FinalChallenge.FinalChallenge.repository.ProductsRepository;
 import com.FinalChallenge.FinalChallenge.service.TransactionsServices;
 import com.FinalChallenge.FinalChallenge.service.TransactionsServicesImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,21 +26,18 @@ public class TransactionsController {
     public ResponseEntity<List<Transactions>> getTransactionsById(@PathVariable("id") int id) {
         Products products = productsRepository.findById(id).orElseThrow();
 
-        if (products != null) {
-            return new ResponseEntity<>(products.getTransactions(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(products.getTransactions(), HttpStatus.OK);
+
     }
 
     @PostMapping("/{idProduct}/add")
-    public ResponseEntity createTransaction(@RequestBody Transactions transactions, @PathVariable("idProduct") int id) {
+    public ResponseEntity<Boolean> createTransaction(@RequestBody Transactions transactions, @PathVariable("idProduct") int id) throws ChangeSetPersister.NotFoundException {
 
-        if (transactionsServices.addMovementToProduct(transactions, id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        if (Boolean.TRUE.equals(transactionsServices.addMovementToProduct(transactions, id))) {
+            return ResponseEntity.status(HttpStatus.OK).body(Boolean.TRUE);
         }
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Boolean.FALSE);
+
     }
 
 }
