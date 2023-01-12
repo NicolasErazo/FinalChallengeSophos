@@ -15,7 +15,7 @@ public class UserServicesImplementation implements UserServices {
     UserRepository userRepository;
 
     @Override
-    public Optional<User> getClientById(int id) {
+    public Optional<User> getUserById(int id) {
         return userRepository.findById(id);
     }
 

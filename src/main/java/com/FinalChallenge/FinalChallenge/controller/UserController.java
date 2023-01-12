@@ -1,6 +1,5 @@
 package com.FinalChallenge.FinalChallenge.controller;
 
-import com.FinalChallenge.FinalChallenge.entity.Clients;
 import com.FinalChallenge.FinalChallenge.entity.User;
 import com.FinalChallenge.FinalChallenge.service.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +18,14 @@ public class UserController {
     UserServices userServices;
 
     @GetMapping
-    public ResponseEntity<List<User>> getClients() {
+    public ResponseEntity<List<User>> getUsers() {
         return new ResponseEntity<>(userServices.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getClientById(@PathVariable("id") int id) {
-        return userServices.getClientById(id)
-                .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
+    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
+        return userServices.getUserById(id)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<User>(HttpStatus.NOT_FOUND));
     }
 }

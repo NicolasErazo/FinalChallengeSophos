@@ -24,7 +24,7 @@ public class ClientsController {
     ClientsRepository clientsRepository;
 
     @GetMapping
-    public ResponseEntity<List<Clients>> getClients() {
+    public ResponseEntity<List<Clients>> getAllClients() {
         return new ResponseEntity<>(clientsServices.getAllClients(), HttpStatus.OK);
     }
 
@@ -32,7 +32,7 @@ public class ClientsController {
     public ResponseEntity<Clients> getClientById(@PathVariable("id") int id) {
         return clientsServices.getClientById(id)
                 .map(client -> new ResponseEntity<>(client, HttpStatus.OK))
-                .orElse(new ResponseEntity<Clients>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{id}/products")
@@ -72,10 +72,10 @@ public class ClientsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteClientById(@PathVariable("id") int id) {
         if (clientsServices.deleteClientById(id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.OK).body(Boolean.TRUE);
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Boolean.FALSE);
+
     }
 
 }

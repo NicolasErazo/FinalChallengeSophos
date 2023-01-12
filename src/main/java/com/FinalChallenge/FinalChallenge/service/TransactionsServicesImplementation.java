@@ -53,29 +53,22 @@ public class TransactionsServicesImplementation implements TransactionsServices 
                     } else {
                         return false;
                     }
-                } else {
-
-                    if (product.get().getAccountType().equals(AccountType.CHECKING) && operation >= -3000000) {
-                        if (true){  //(-2988000 <= ((transaction.getValue())*-1)) {
-                            products.setBalance(operation);
-                            long gmf = (long) (transaction.getValue() * 0.004);
-                            if (!products.isGMF()) {
-                                if (products.getAvailableBalance() == 0) {
-                                    products.setAvailableBalance(product.get().getBalance() - gmf);
-                                } else {
-                                    products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
-                                }
-
-                            } else {
-                                products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
-                            }
+                } else if (product.get().getAccountType().equals(AccountType.CHECKING) && operation >= -3000000) {
+                    products.setBalance(operation);
+                    long gmf = (long) (transaction.getValue() * 0.004);
+                    if (!products.isGMF()) {
+                        if (products.getAvailableBalance() == 0) {
+                            products.setAvailableBalance(product.get().getBalance() - gmf);
                         } else {
-                            return false;
+                            products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue() - gmf);
                         }
 
                     } else {
-                        return false;
+                        products.setAvailableBalance(products.getAvailableBalance() - transaction.getValue());
                     }
+
+                } else {
+                    return false;
                 }
 
             } else if (!product.get().getStatus().equals(Status.INACTIVE)) {
